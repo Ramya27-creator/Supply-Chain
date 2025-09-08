@@ -10,5 +10,9 @@ matplotlib>=3.7.2
 seaborn>=0.12.2
 plotly>=5.18.0
 
+# Database connectivity
+pyodbc>=5.2.0
+
 # Optional for enhanced logging
 rich>=14.1.0
+
