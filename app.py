@@ -20,7 +20,7 @@ def dashboard():
     # --- Load Data ---
     @st.cache_data(ttl=600)
     def load_data():
-        file_path = r"C:\Users\Dell\Desktop\Internship_DataAnalyst_Projects\Supply Chain\Streamlit\DataCo.zip"
+        file_path = "DataCo.zip"
 
         if not os.path.exists(file_path):
             st.error(f"File not found at {file_path}")
@@ -312,5 +312,6 @@ if not st.session_state.logged_in:
             st.error("❌ Invalid username or password")
 else:
     dashboard()
+
 
 
