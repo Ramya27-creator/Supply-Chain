@@ -19,7 +19,7 @@ def dashboard():
     # --- Load Data ---
     @st.cache_data(ttl=600)
     def load_data():
-        server = 'RAMYA\\SQLEXPRESS'
+        server = 'localhost\\SQLEXPRESS'
         database = 'Supply_Chain'
         driver = '{ODBC Driver 17 for SQL Server}'
         conn = pyodbc.connect(f'DRIVER={driver};SERVER={server};DATABASE={database};Trusted_Connection=yes;')
@@ -254,3 +254,4 @@ if not st.session_state.logged_in:
             st.error("❌ Invalid username or password")
 else:
     dashboard()
+
