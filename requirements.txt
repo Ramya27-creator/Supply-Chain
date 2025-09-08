@@ -1,17 +1,14 @@
-# Streamlit for the web app
-streamlit==1.24.0
+# Streamlit framework
+streamlit==1.49.1
 
 # Data manipulation
 pandas>=2.0.3
 numpy>=1.26.0
 
-# Database connection
-pyodbc>=4.0.40
-
-# Visualizations
+# Visualization
 matplotlib>=3.7.2
 seaborn>=0.12.2
 plotly>=5.18.0
 
-# Optional for better logging
+# Optional for enhanced logging
 rich>=14.1.0
