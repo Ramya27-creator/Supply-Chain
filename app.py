@@ -94,50 +94,56 @@ def dashboard():
     st.subheader(f"Filtered Data Rows: {len(filtered_data)}")
 
     # --- KPIs ---
-    total_orders = filtered_data["Order_Id"].nunique() if "Order_Id" in filtered_data.columns else 0
-    total_customers = filtered_data["Customer_Id"].nunique() if "Customer_Id" in filtered_data.columns else 0
-    total_revenue = filtered_data["Revenue"].sum() if "Revenue" in filtered_data.columns else 0
-    total_profit = (
-        filtered_data["Order_Profit_Per_Order"].sum()
-        if "Order_Profit_Per_Order" in filtered_data.columns
-        else 0
-    )
-    aov = total_revenue / total_orders if total_orders > 0 else 0
-    total_items_sold = (
-        filtered_data["Order_Item_Quantity"].sum()
-        if "Order_Item_Quantity" in filtered_data.columns
-        else 0
-    )
-    total_deliveries = (
-        filtered_data[filtered_data["shipping_date_DateOrders"].notna()]["Order_Id"].nunique()
-        if "shipping_date_DateOrders" in filtered_data.columns
-        else 0
-    )
-    on_time_deliveries = (
-        filtered_data[filtered_data["Late_delivery_risk"] == 0]["Order_Id"].nunique()
-        if "Late_delivery_risk" in filtered_data.columns
-        else 0
-    )
-    on_time_delivery_pct = (on_time_deliveries / total_deliveries * 100) if total_deliveries > 0 else 0
-    late_deliveries = (
-        filtered_data[filtered_data["Late_delivery_risk"] == 1]["Order_Id"].nunique()
-        if "Late_delivery_risk" in filtered_data.columns
-        else 0
-    )
-    delivery_sla_breach_pct = (late_deliveries / total_deliveries * 100) if total_deliveries > 0 else 0
+total_orders = filtered_data["Order_Id"].nunique() if "Order_Id" in filtered_data.columns else 0
+total_customers = filtered_data["Customer_Id"].nunique() if "Customer_Id" in filtered_data.columns else 0
+total_revenue = filtered_data["Revenue"].sum() if "Revenue" in filtered_data.columns else 0
+total_profit = (
+    filtered_data["Order_Profit_Per_Order"].sum()
+    if "Order_Profit_Per_Order" in filtered_data.columns
+    else 0
+)
 
-    st.subheader("Key Metrics")
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Total Orders", total_orders)
-    col2.metric("Total Customers", total_customers)
-    col3.metric("Total Revenue", f"${total_revenue:,.2f}")
-    col4.metric("Total Profit", f"${total_profit:,.2f}")
+# Convert revenue and profit to millions
+total_revenue_m = total_revenue / 1_000_000
+total_profit_m = total_profit / 1_000_000
 
-    col5, col6, col7, col8 = st.columns(4)
-    col5.metric("Average Order Value (AOV)", f"${aov:,.2f}")
-    col6.metric("Total Items Sold", total_items_sold)
-    col7.metric("On-Time Delivery %", f"{on_time_delivery_pct:.2f}%")
-    col8.metric("Delivery SLA Breach %", f"{delivery_sla_breach_pct:.2f}%")
+aov = total_revenue / total_orders if total_orders > 0 else 0
+total_items_sold = (
+    filtered_data["Order_Item_Quantity"].sum()
+    if "Order_Item_Quantity" in filtered_data.columns
+    else 0
+)
+total_deliveries = (
+    filtered_data[filtered_data["shipping_date_DateOrders"].notna()]["Order_Id"].nunique()
+    if "shipping_date_DateOrders" in filtered_data.columns
+    else 0
+)
+on_time_deliveries = (
+    filtered_data[filtered_data["Late_delivery_risk"] == 0]["Order_Id"].nunique()
+    if "Late_delivery_risk" in filtered_data.columns
+    else 0
+)
+on_time_delivery_pct = (on_time_deliveries / total_deliveries * 100) if total_deliveries > 0 else 0
+late_deliveries = (
+    filtered_data[filtered_data["Late_delivery_risk"] == 1]["Order_Id"].nunique()
+    if "Late_delivery_risk" in filtered_data.columns
+    else 0
+)
+delivery_sla_breach_pct = (late_deliveries / total_deliveries * 100) if total_deliveries > 0 else 0
+
+st.subheader("Key Metrics")
+col1, col2, col3, col4 = st.columns(4)
+col1.metric("Total Orders", total_orders)
+col2.metric("Total Customers", total_customers)
+col3.metric("Total Revenue", f"${total_revenue_m:,.2f}M")
+col4.metric("Total Profit", f"${total_profit_m:,.2f}M")
+
+col5, col6, col7, col8 = st.columns(4)
+col5.metric("Average Order Value (AOV)", f"${aov:,.2f}")
+col6.metric("Total Items Sold", total_items_sold)
+col7.metric("On-Time Delivery %", f"{on_time_delivery_pct:.2f}%")
+col8.metric("Delivery SLA Breach %", f"{delivery_sla_breach_pct:.2f}%")
+
 
     # --------------------------
     # CHARTS
@@ -312,6 +318,7 @@ if not st.session_state.logged_in:
             st.error("❌ Invalid username or password")
 else:
     dashboard()
+
 
 
 
