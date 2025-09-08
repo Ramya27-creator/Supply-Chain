@@ -28,9 +28,9 @@ def dashboard():
 
         # Fix: specify encoding to avoid UnicodeDecodeError
         try:
-            df = pd.read_zip(file_path, encoding="latin1")
+            df = pd.read_csv(file_path, compression="zip",encoding="latin1")
         except UnicodeDecodeError:
-            df = pd.read_zip(file_path, encoding="cp1252")  # fallback for Windows
+            df = pd.read_csv(file_path, compression="zip",encoding="cp1252")  # fallback for Windows
 
         # --- Handle Order Date Column Robustly ---
         date_cols = [c for c in df.columns if "order_date" in c.lower()]
@@ -312,4 +312,5 @@ if not st.session_state.logged_in:
             st.error("❌ Invalid username or password")
 else:
     dashboard()
+
 
