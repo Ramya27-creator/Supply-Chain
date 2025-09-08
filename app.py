@@ -20,7 +20,7 @@ def dashboard():
     # --- Load Data ---
     @st.cache_data(ttl=600)
     def load_data():
-        file_path = r"C:\Users\Dell\Desktop\Internship_DataAnalyst_Projects\Supply Chain\Streamlit\DataCo.csv"
+        file_path = r"C:\Users\Dell\Desktop\Internship_DataAnalyst_Projects\Supply Chain\Streamlit\DataCo.zip"
 
         if not os.path.exists(file_path):
             st.error(f"File not found at {file_path}")
@@ -28,9 +28,9 @@ def dashboard():
 
         # Fix: specify encoding to avoid UnicodeDecodeError
         try:
-            df = pd.read_csv(file_path, encoding="latin1")
+            df = pd.read_zip(file_path, encoding="latin1")
         except UnicodeDecodeError:
-            df = pd.read_csv(file_path, encoding="cp1252")  # fallback for Windows
+            df = pd.read_zip(file_path, encoding="cp1252")  # fallback for Windows
 
         # --- Handle Order Date Column Robustly ---
         date_cols = [c for c in df.columns if "order_date" in c.lower()]
@@ -312,3 +312,4 @@ if not st.session_state.logged_in:
             st.error("❌ Invalid username or password")
 else:
     dashboard()
+
