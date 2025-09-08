@@ -13,25 +13,7 @@ st.set_page_config(page_title="Supply Chain Dashboard", layout="wide")
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
-def login():
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-    login_btn = st.button("Login")
-
-    if login_btn:
-        if username == "Ramya" and password == "Ramya123":
-            st.session_state.logged_in = True
-            st.success("✅ Login successful! Loading dashboard...")
-        else:
-            st.error("❌ Invalid username or password")
-
-if not st.session_state.logged_in:
-    st.title("🔐 Login")
-    login()
-else:
-    # --------------------------
-    # DASHBOARD CODE
-    # --------------------------
+def dashboard():
     st.title("📊 Supply Chain Dashboard")
 
     # --- Load Data ---
@@ -256,3 +238,19 @@ else:
     ax.set_ylabel("Number of Late Deliveries")
     ax.grid(axis='y', linestyle='--', alpha=0.6)
     st.pyplot(fig)
+
+# --------------------------
+# LOGIN OR DASHBOARD
+# --------------------------
+if not st.session_state.logged_in:
+    st.title("🔐 Login")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if username == "Ramya" and password == "Ramya123":
+            st.session_state.logged_in = True
+            st.success("✅ Login successful!")
+        else:
+            st.error("❌ Invalid username or password")
+else:
+    dashboard()
